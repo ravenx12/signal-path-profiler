@@ -1,0 +1,11 @@
+*				{ color:inherit; background-color:inherit; border-color:inherit; font-family:inherit; text-align:inherit; }
+html, body			{ font-family:"Arial",sans-serif; font-size:12pt; }
+code, kbd, samp, tt, var	{ font-family:"Courier New",monospace; }
+
+@media screen
+{
+html, body	{ color:#FFFFFF; background-color:#330000; }
+a:link		{ text-decoration:none; color:#40E0D0; }
+a:visited	{ text-decoration:none; color:#FF8C00; }
+a:hover		{ text-decoration:underline; }
+}
