@@ -573,7 +573,7 @@ def main(pars):
     if (x1 != None) and (x1 >= XMin) and (x1 < XMax) and (y1 != None) and (y1 >= YMin) and (y1 < YMax) and (
                 x2 != None) and (x2 >= XMin) and (x2 < XMax) and (y2 != None) and (y2 >= YMin) and (y2 < YMax):
         #pointsdata is a JSON representation of the height point information for the profile
-        pointsdata = "{\"points\":{"
+
         if db:
             t0 = datetime.now()
 
@@ -627,6 +627,7 @@ def main(pars):
         surface = 0
         lastTr = None
 
+        pointsdata = "{\"points\":{"
         for i in range(0, nS + 1):
             aS = i * stA
             s = aS * Re
