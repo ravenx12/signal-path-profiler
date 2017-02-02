@@ -572,7 +572,8 @@ def main(pars):
 
     if (x1 != None) and (x1 >= XMin) and (x1 < XMax) and (y1 != None) and (y1 >= YMin) and (y1 < YMax) and (
                 x2 != None) and (x2 >= XMin) and (x2 < XMax) and (y2 != None) and (y2 >= YMin) and (y2 < YMax):
-
+        #pointsdata is a JSON representation of the height point information for the profile
+        pointsdata = "{\"points\":{"
         if db:
             t0 = datetime.now()
 
@@ -679,6 +680,11 @@ def main(pars):
                         nTr = 0
                     points.append(point)
                     if db:
+                        # This is where the points array are generated
+                        #point[0] = xcoord, point[1] = ycoord, point[2] = curved earth height, point[3] true height
+                        print "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f},\n" % (point[0], point[1], point[2], point[3])
+                        pointsdata +=  "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f},\n" % (point[0], point[1], point[2], point[3])
+
                         if cv != None:
                             prof += "[%.6f,%.6f,%.0f,%.0f],<br>\n" % (point[0], point[1], point[2], point[3])
                         else:
@@ -720,7 +726,7 @@ def main(pars):
                 else:
                     prof += "[%.6f,%.6f,%.0f]<br>\n" % (point[0], point[1], point[2])
                 prof += "],<br>\n"
-
+            pointsdata += "}"
         if vb:
             prof += "/* Tiles Used: %d */<br>\n" % Tiles
 
@@ -775,7 +781,6 @@ def main(pars):
             rs["prof"] = points
             if db:
                 resp += prof
-
             # Google Static Image Charts URL
             # See https://developers.google.com/chart/image/docs/chart_params
 
@@ -826,7 +831,6 @@ def main(pars):
             scale = MPK * d
             interval = axisStep(scale, 5)
             src += "|2,0," + str(round(scale, 2)) + "," + str(interval)
-
             scale = maxEl - minEl
             interval = max(int(round(axisStep(scale, 3))), 1)
             chxl = "&chxl=0:|km|1:|m"
@@ -847,7 +851,6 @@ def main(pars):
                     chxl += "|" + str(i)
                     chxp += "," + str(int(round(100 * (i - minEl) / scale)))
             src += chxl + chxp
-
             rs["url"] = src
             src = src.replace("&", "&amp;").replace("|", "%7C")
             if db:
@@ -875,14 +878,12 @@ def main(pars):
 
     elif (x1 != None) and (x1 >= XMin) and (x1 < XMax) and (y1 != None) and (y1 >= YMin) and (y1 < YMax) and (
                 x2 == None) and (y2 == None):
-
         if db:
             t0 = datetime.now()
 
         # Get spot height for a single point
         tr = SRTM.getHeight(Duple(x1, y1))
         resp += "{\"ht\":%.0f}" % tr
-
         if cb:
             resp = cb + "(" + resp + ");"
 
@@ -952,7 +953,6 @@ def main(pars):
             page += " - Error"
         else:
             page += " - Debug"
-
         template = open(os.path.join(os.path.dirname(__file__), TempPath), "r").read()
         resp = "Content-Type: text/html\n\n" \
                + template.replace("{{app}}", "MacFH - UK SRTM Elevation Profiler") \
@@ -971,6 +971,12 @@ def main(pars):
         resp = "Content-Type: application/json\n\n" + resp
 
     sys.stdout.write(resp)
+
+    file = open('testfile.txt','w')
+
+    file.write(pointsdata)
+
+    file.close()
 
 
 main(cgi.FieldStorage())
