@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b69bdf7a-2f83-4314-8de4-bb00d7e02573" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cgi-bin/pointsdata.txt" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cgi-bin/SRTM.py" afterPath="$PROJECT_DIR$/cgi-bin/SRTM.py" />
     </list>
@@ -28,8 +26,8 @@
       <file leaf-file-name="SRTM.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="87" column="12" selection-start-line="87" selection-start-column="12" selection-end-line="87" selection-end-column="12" />
+            <state relative-caret-position="255">
+              <caret line="84" column="28" selection-start-line="84" selection-start-column="28" selection-end-line="84" selection-end-column="28" />
               <folding>
                 <element signature="e#3638#3647#0" expanded="true" />
               </folding>
@@ -622,8 +620,8 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/2DCoordinates" />
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="87" column="12" selection-start-line="87" selection-start-column="12" selection-end-line="87" selection-end-column="12" />
+        <state relative-caret-position="255">
+          <caret line="84" column="28" selection-start-line="84" selection-start-column="28" selection-end-line="84" selection-end-column="28" />
           <folding>
             <element signature="e#3638#3647#0" expanded="true" />
           </folding>

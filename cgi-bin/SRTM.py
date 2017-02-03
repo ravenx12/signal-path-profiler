@@ -83,7 +83,6 @@ cgitb.enable()
 # Template location
 TempPath = os.path.join("..", "Resources", "Templates", os.path.splitext(os.path.basename(__file__))[0] + ".html")
 print "Tempath is", TempPath
-#this is just to force a change
 
 # Page title
 PageTitle = "www.macfh.co.uk"
