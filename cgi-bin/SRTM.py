@@ -26,7 +26,7 @@
 #
 # Optionally for the profile, an array of up to 100 samples can be returned both as JSON and as a Google Static
 # Image Charts URL.  If the path covers more than 100 SRTM cells, then, depending on the absence or presence
-# of an mx=true parameter, each point returned represents either the average (by default) or maximum height
+# of an maxpt=true parameter, each point returned represents either the average (by default) or maximum height
 # that the path encounters from those cells in the neighbourhood of that point.  If an SRTM void pixel is
 # encountered, then the height returned is interpolated from the nearest neighbouring valid pixels.
 #
@@ -45,8 +45,8 @@
 #
 # Usage (without the spaces and line breaks that have been inserted here for clarity):
 #	http://<host>/cgi-bin/SRTM.py ? x1=<x1> & y1=<y1> [ & x2=<x2> & y2=<y2> ]
-#					[ & cb=<callback function name> ]
-#					[ & pr=True ] [ & cv=True ] [ & mx=True ]
+#					[ & callback=<callback function name> ]
+#					[ & pr=True ] [ & cv=True ] [ & maxpt=True ]
 #					[ & db=True ]
 #
 # Where:
@@ -54,14 +54,14 @@
 #	y1	Latitude of first point (ditto)
 #	x2	Longitude of second point (required for profile, ditto)
 #	y2	Latitude of second point (ditto)
-#	cb	Optionally request the data be returned as a JSONP function call back
+#	callback	Optionally request the data be returned as a JSONP function call back
 #			with the JSON data as the single argument to the call
 #			(enables the returned data to be read as valid JavaScript by a <script> tag)
 #	pr	Optionally request a full profile array and a Google Static Image Charts URL to draw it
-#	cv	Optionally include the height of the curvature of Earth's surface in the returned data
-#	mx	Optionally, have each sample point returned be the maximum, rather than the default average,
+#	curveht	Optionally include the height of the curvature of Earth's surface in the returned data
+#	maxpt	Optionally, have each sample point returned be the maximum, rather than the default average,
 #			of the SRTM heights in the neighbourhood of the point.
-#	db	Optionally request output in the form of HTML for debugging purposes
+#	debug	Optionally request output in the form of HTML for debugging purposes
 #	vb	As above, but more verbose
 # And:
 #	Failure to provide any of the first two or four required parameters returns a help message
@@ -83,6 +83,7 @@ cgitb.enable()
 # Template location
 TempPath = os.path.join("..", "Resources", "Templates", os.path.splitext(os.path.basename(__file__))[0] + ".html")
 print "Tempath is", TempPath
+#this is just to force a change
 
 # Page title
 PageTitle = "www.macfh.co.uk"
@@ -487,7 +488,7 @@ def main(pars):
     global Tiles
 
     resp = ""
-    error = x1 = y1 = x2 = y2 = cb = pr = cv = mx = db = vb = par = None
+    error = x1 = y1 = x2 = y2 = callback = pr = curveht = maxht = debug = vb = par = None
     args = sys.argv[1:]
 
     print ' '.join(args)
@@ -522,10 +523,11 @@ def main(pars):
         pass
 
     try:
-        #  par = pars.getvalue("cb")
+        #  par = pars.getvalue("callback")
         par = (sys.argv[5])
         if not par == 'none':
-            cb = par
+            callback = par
+            print "callback is " + callback
     except Exception:
         pass
 
@@ -538,26 +540,26 @@ def main(pars):
         pass
 
     try:
-        # par = pars.getvalue("cv")
+        # par = pars.getvalue("curveht")
         par = (sys.argv[7])
         if par.lower() in TRUE:
-            cv = True
+            curveht = True
     except Exception:
         pass
 
     try:
-        # par = pars.getvalue("mx")
+        # par = pars.getvalue("maxht")
         par = (sys.argv[8])
         if par.lower() in TRUE:
-            mx = True
+            maxht = True
     except Exception:
         pass
 
     try:
-        # par = pars.getvalue("db")
+        # par = pars.getvalue("debug")
         par = (sys.argv[9])
         if par.lower() in TRUE:
-            db = True
+            debug = True
     except Exception:
         pass
 
@@ -565,7 +567,7 @@ def main(pars):
         # par = pars.getvalue("vb")
         par = (sys.argv[10])
         if par.lower() in TRUE:
-            vb = db = True
+            vb = debug = True
     except Exception:
         pass
 
@@ -574,7 +576,7 @@ def main(pars):
                 x2 != None) and (x2 >= XMin) and (x2 < XMax) and (y2 != None) and (y2 >= YMin) and (y2 < YMax):
         #pointsdata is a JSON representation of the height point information for the profile
 
-        if db:
+        if debug:
             t0 = datetime.now()
 
         Tiles = 0
@@ -596,14 +598,14 @@ def main(pars):
             nP = min(nS, stLim - 1)
             stP = aD / nP
             points = []
-            if db:
+            if debug:
                 prof = "\"prof\":[<br>\n"
             thisP = 0
             nextP = 1
             lastP = aD + 0.1
 
             # Maximum or average sample height
-            if mx:
+            if maxht:
                 TrHt = SRTM.Min
             else:
                 TrHt = 0
@@ -635,10 +637,10 @@ def main(pars):
             p = XYZ2LL(Triple(xyz1.x + i * stX, xyz1.y + i * stY, xyz1.z + i * stZ))
             ll = Duple(degrees(p.x), degrees(p.y))
 
-            if cv != None:
-                cv = Re * (cos((aD / 2) - aS) - cos(aD / 2))
-                tr = cv + SRTM.getHeight(ll)
-                cv = int(round(cv))
+            if curveht != None:
+                curveht = Re * (cos((aD / 2) - aS) - cos(aD / 2))
+                tr = curveht + SRTM.getHeight(ll)
+                curveht = int(round(curveht))
             else:
                 tr = SRTM.getHeight(ll)
 
@@ -672,7 +674,7 @@ def main(pars):
             # Profile
             if pr:
                 if i and abs(nextP * stP - aS) <= abs(aS - thisP * stP):
-                    if mx:
+                    if maxht:
                         point[len(point) - 1] = int(round(TrHt))
                         TrHt = SRTM.Min
                     else:
@@ -680,13 +682,13 @@ def main(pars):
                         TrHt = 0
                         nTr = 0
                     points.append(point)
-                    if db:
+                    if debug:
                         # This is where the points array are generated
                         #point[0] = xcoord, point[1] = ycoord, point[2] = curved earth height, point[3] true height
                         print "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f},\n" % (point[0], point[1], point[2], point[3])
                         pointsdata +=  "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f},\n" % (point[0], point[1], point[2], point[3])
 
-                        if cv != None:
+                        if curveht != None:
                             prof += "[%.6f,%.6f,%.0f,%.0f],<br>\n" % (point[0], point[1], point[2], point[3])
                         else:
                             prof += "[%.6f,%.6f,%.0f],<br>\n" % (point[0], point[1], point[2])
@@ -696,33 +698,33 @@ def main(pars):
 
                 if abs(aS - thisP * stP) < lastP:
                     lastP = abs(aS - thisP * stP)
-                    if cv != None:
-                        point = [round(ll.x, 6), round(ll.y, 6), int(round(cv)), 0]
+                    if curveht != None:
+                        point = [round(ll.x, 6), round(ll.y, 6), int(round(curveht)), 0]
                     else:
                         point = [round(ll.x, 6), round(ll.y, 6), 0]
 
                 # Maximum or average local sample height
-                if mx:
+                if maxht:
                     TrHt = max(tr, TrHt)
                 else:
                     TrHt += tr
                     nTr += 1
 
                 if vb:
-                    if cv != None:
-                        prof += "/* {%d,%.6f,%.6f,%.0f,%.0f} */<br>\n" % (i, ll.x, ll.y, cv, tr)
+                    if curveht != None:
+                        prof += "/* {%d,%.6f,%.6f,%.0f,%.0f} */<br>\n" % (i, ll.x, ll.y, curveht, tr)
                     else:
                         prof += "/* {%d,%.6f,%.6f,%.0f} */<br>\n" % (i, ll.x, ll.y, tr)
 
         # If profile, finish last point
         if pr:
-            if mx:
+            if maxht:
                 point[len(point) - 1] = int(round(TrHt))
             else:
                 point[len(point) - 1] = int(round(TrHt / nTr))
             points.append(point)
-            if db:
-                if cv != None:
+            if debug:
+                if curveht != None:
                     prof += "[%.6f,%.6f,%.0f,%.0f]<br>\n" % (point[0], point[1], point[2], point[3])
                 else:
                     prof += "[%.6f,%.6f,%.0f]<br>\n" % (point[0], point[1], point[2])
@@ -746,7 +748,7 @@ def main(pars):
 
         # Compile the output
         rs = {}
-        if db:
+        if debug:
             resp += "{<br>\n"
 
         # Distances in km
@@ -755,7 +757,7 @@ def main(pars):
         rs["ascent"] = ascent
         rs["level"] = level
         rs["descent"] = descent
-        if db:
+        if debug:
             resp += "\"dist\":%.3f,<br>\n" % rs["dist"]
             resp += "\"surface\":%.3f,<br>\n" % rs["surface"]
             resp += "\"ascent\":%.3f,<br>\n" % rs["ascent"]
@@ -769,7 +771,7 @@ def main(pars):
         rs["minGr"] = minGr
         rs["maxGr"] = maxGr
         rs["aveGr"] = aveGr
-        if db:
+        if debug:
             resp += "\"min\":%d,<br>\n" % (rs["min"])
             resp += "\"max\":%d,<br>\n" % (rs["max"])
             resp += "\"average\":%d,<br>\n" % (rs["average"])
@@ -780,7 +782,7 @@ def main(pars):
         # If profile, insert the profile data array and the Google Static Image Charts URL
         if pr:
             rs["prof"] = points
-            if db:
+            if debug:
                 resp += prof
             # Google Static Image Charts URL
             # See https://developers.google.com/chart/image/docs/chart_params
@@ -811,11 +813,11 @@ def main(pars):
                   + "&chf=bg,s," + white + "|c,lg,90," + sky1 + ",1," + sky2 + ",0" \
                   + "&chco=" \
                   + terr + "," \
-                  + ((earth + ",") if cv != None else "") \
+                  + ((earth + ",") if curveht != None else "") \
                   + axes \
                   + "&chm=" \
                   + "b," + terr + ",0,1,0" \
-                  + (("|b," + earth + ",1,2,0") if cv != None else "") \
+                  + (("|b," + earth + ",1,2,0") if curveht != None else "") \
                   + "&chxt=x,y,t,r" \
                   + "&chxs=" \
                   + "0," + axes + "," + font + ",0,lt," + axes + "," + axes \
@@ -854,18 +856,18 @@ def main(pars):
             src += chxl + chxp
             rs["url"] = src
             src = src.replace("&", "&amp;").replace("|", "%7C")
-            if db:
+            if debug:
                 resp += "\"url\":\"%s\"<br>\n" % src
 
-        if db:
+        if debug:
             resp += "}"
         else:
             resp = json.dumps(rs, separators=(",", ":"), sort_keys=True)
 
-        if cb:
-            resp = cb + "(" + resp + ");"
+        if callback:
+            resp = callback + "(" + resp + ");"
 
-        if db:
+        if debug:
             resp = "<p>Output:<br>\n" + resp + "</p>\n"
             if pr:
                 resp += "<img src=\"%s\" style=\"width:180mm; height:60mm;\" alt=\"Google Static Image Chart\">\n" % (
@@ -879,17 +881,17 @@ def main(pars):
 
     elif (x1 != None) and (x1 >= XMin) and (x1 < XMax) and (y1 != None) and (y1 >= YMin) and (y1 < YMax) and (
                 x2 == None) and (y2 == None):
-        if db:
+        if debug:
             t0 = datetime.now()
 
         # Get spot height for a single point
         tr = SRTM.getHeight(Duple(x1, y1))
         resp += "{\"ht\":%.0f}" % tr
-        if cb:
-            resp = cb + "(" + resp + ");"
+        if callback:
+            resp = callback + "(" + resp + ");"
 
         # Compile the output
-        if db:
+        if debug:
             t1 = datetime.now()
             tt = t1 - t0
             resp = "<p>Output:&nbsp; %s</p>\n<p>Time taken: %0.3fs</p>\n" % (
@@ -900,7 +902,7 @@ def main(pars):
     else:
         error = True
 
-    if db or error:
+    if debug or error:
         version = os.path.basename(sys.argv[0]) + " v2.5, " \
                   + datetime.utcfromtimestamp(os.path.getmtime(sys.argv[0])).isoformat(" ")
         page = PageTitle + " - " + version
@@ -935,11 +937,11 @@ def main(pars):
                 XMin, XMax) \
                     + "&nbsp;&nbsp;&nbsp;<strong>y2</strong>&nbsp;&nbsp;End latitude (signed decimal degrees &gt;= %.1f and &lt; %.1f, ditto)<br>\n" % (
                 YMin, YMax) \
-                    + "<p>Optionally, a callback function name can be given as <strong>cb</strong>.&nbsp; The data will then be returned as <span title=\"JSON with Padding\">JSONP</span> which can be loaded directly by a <code>&lt;script&gt;</code> tag</p>\n" \
+                    + "<p>Optionally, a callback function name can be given as <strong>callback</strong>.&nbsp; The data will then be returned as <span title=\"JSON with Padding\">JSONP</span> which can be loaded directly by a <code>&lt;script&gt;</code> tag</p>\n" \
                     + "<p>The following parameters are ignored if a second point is not given&nbsp;&hellip;</p>\n" \
                     + "<p>Optionally, use the parameter <strong>pr=true</strong> to obtain a full profile and a Google Static Image Charts URL for displaying it.</p>" \
-                    + "<p>Optionally, use the parameter <strong>cv=true</strong> to include the height of curvature of Earth's surface in the returned data.</p>" \
-                    + "<p>Optionally, use the parameter <strong>mx=true</strong> to have each sample point returned be the maximum, rather than by default the average, of the SRTM heights in the neighbourhood of the point.</p>" \
+                    + "<p>Optionally, use the parameter <strong>curveht=true</strong> to include the height of curvature of Earth's surface in the returned data.</p>" \
+                    + "<p>Optionally, use the parameter <strong>maxht=true</strong> to have each sample point returned be the maximum, rather than by default the average, of the SRTM heights in the neighbourhood of the point.</p>" \
                     + "<p>The data columns returned in the optional profile array have the following meaning:<br>\n" \
                     + "&nbsp;&nbsp;&nbsp;Longitude (signed decimal degrees referenced to WGS84)<br>\n" \
                     + "&nbsp;&nbsp;&nbsp;Latitude (ditto)<br>\n" \
@@ -948,7 +950,7 @@ def main(pars):
                     + "<p>Before submitting the URL to Google, <strong>~Width~</strong> and <strong>~Height~</strong> " \
                     + "must be replaced by suitable dimensions (pixels), the product (multiplication) of the two being less than Google's limit of 300,000&nbsp; -&nbsp; " \
                     + "see the <a href=\"https://developers.google.com/chart/image/\" title=\"developers.google.com\" target=\"_blank\">Google Static Image Charts API</a> for further information (this service has been deprecated since 2012 but thankfully is still running).</p>\n" \
-                    + "<p>Optionally, use the parameter <strong>db=true</strong> " \
+                    + "<p>Optionally, use the parameter <strong>debug=true</strong> " \
                     + "to obtain output as HTML as an aid to debugging.</p>\n"
 
             page += " - Error"
@@ -962,21 +964,19 @@ def main(pars):
                    .replace("{{y1}}", "%s" % y1) \
                    .replace("{{x2}}", "%s" % x2) \
                    .replace("{{y2}}", "%s" % y2) \
-                   .replace("{{cb}}", "%s" % cb) \
+                   .replace("{{cb}}", "%s" % callback) \
                    .replace("{{pr}}", "%s" % pr) \
-                   .replace("{{cv}}", "%s" % ("True" if cv != None else "None")) \
-                   .replace("{{mx}}", "%s" % mx) \
-                   .replace("{{db}}", "%s" % db) \
+                   .replace("{{cv}}", "%s" % ("True" if curveht != None else "None")) \
+                   .replace("{{mx}}", "%s" % maxht) \
+                   .replace("{{db}}", "%s" % debug) \
                    .replace("{{resp}}", resp)
     else:
         resp = "Content-Type: application/json\n\n" + resp
 
     sys.stdout.write(resp)
 
-    file = open('testfile.txt','w')
-
+    file = open("pointsdata.txt", 'w')
     file.write(pointsdata)
-
     file.close()
 
 
