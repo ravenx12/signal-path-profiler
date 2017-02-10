@@ -159,82 +159,6 @@ thick = 6
 TRUE = ("true", "t", "yes", "y", "1")
 
 
-# Spherical and cartographical geometry
-
-# Class defining a 2D coordinate
-class Duple:
-    def __init__(self, xx, yy):
-        self.x = xx
-        self.y = yy
-
-
-# Class defining a 3D coordinate
-class Triple:
-    def __init__(self, xx, yy, zz):
-        self.x = xx
-        self.y = yy
-        self.z = zz
-
-
-# Angular distance between two points (radians in and out)
-def distAngr(d1, d2):
-    dC1 = LL2XYZ(d1)
-    dC2 = LL2XYZ(d2)
-    return acos(min(dC1.x * dC2.x + dC1.y * dC2.y + dC1.z * dC2.z, 1))
-
-
-# Calculate XYZ direction cosines Triple of a LonLat Duple (radians in)
-def LL2XYZ(d):
-    return Triple(cos(d.x) * cos(d.y), sin(d.x) * cos(d.y), sin(d.y))
-
-
-# Calculate the LonLat Duple of an XYZ Triple (radians out)
-def XYZ2LL(t):
-    return Duple(atan(t.y / t.x), atan(t.z / sqrt(t.x ** 2 + t.y ** 2)))
-
-
-# Routines for creating Google Static Image Charts URL
-def axisStep(range, minNum):
-    if range:
-        interval = 10 ** floor(log(range) / log(10))
-        turn = False
-        while range / interval < minNum:
-            interval = interval / (2 if turn else 5)
-            turn = not turn
-    else:
-        interval = 0.0005
-    return interval
-
-
-def extEncodeGoogle(aValue, aMin, aMax):
-    result = None
-    if (aMin <= aValue) and (aValue <= aMax):
-        value = (aValue - aMin) * 4096 / abs(aMax - aMin)
-        dig1 = simEncodeGoogle(floor(value / 64), 0, 64, True)
-        dig2 = simEncodeGoogle(floor(value % 64), 0, 64, True)
-        result = dig1 + dig2
-    return result
-
-
-def simEncodeGoogle(aValue, aMin, aMax, extDigit):
-    result = None
-    if (aMin <= aValue) and (aValue <= aMax):
-        value = int(round((aValue - aMin) * (64 if extDigit else 61) / abs(aMax - aMin)))
-        if value < 26:
-            result = chr(ord("A") + value)
-        elif value < 52:
-            result = chr(ord("a") + (value - 26))
-        elif value < 62:
-            result = chr(ord("0") + (value - 52))
-        elif extDigit and (value == 62):
-            result = "-"
-        elif extDigit and (value == 63):
-            result = "."
-    return result
-
-
-# print "Content-Type: text/html\n\n"
-
 
 # Shuttle Radar Topography Mission (SRTM) terrain data: http://www2.jpl.nasa.gov/srtm/cbanddataproducts.html
 # Required are 3" (~90m) v2 or v3 tiles covering the British Isles 11W to 3E, 49N to 60N inclusive
@@ -571,10 +495,11 @@ def main(pars):
         pass
 
 
+
     if (x1 != None) and (x1 >= XMin) and (x1 < XMax) and (y1 != None) and (y1 >= YMin) and (y1 < YMax) and (
                 x2 != None) and (x2 >= XMin) and (x2 < XMax) and (y2 != None) and (y2 >= YMin) and (y2 < YMax):
         #pointsdata is a JSON representation of the height point information for the profile
-
+        pointsdata = "\n{\"points\":{"
         if debug:
             t0 = datetime.now()
 
@@ -628,7 +553,8 @@ def main(pars):
         surface = 0
         lastTr = None
 
-        pointsdata = "{\"points\":{"
+
+
         for i in range(0, nS + 1):
             aS = i * stA
             s = aS * Re
@@ -682,7 +608,7 @@ def main(pars):
                         nTr = 0
                     points.append(point)
                     if debug:
-                        # This is where the points array are generated
+                        #****************** This is where the points array are generated
                         #point[0] = xcoord, point[1] = ycoord, point[2] = curved earth height, point[3] true height
                         print "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f},\n" % (point[0], point[1], point[2], point[3])
                         pointsdata +=  "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f},\n" % (point[0], point[1], point[2], point[3])
@@ -728,9 +654,11 @@ def main(pars):
                 else:
                     prof += "[%.6f,%.6f,%.0f]<br>\n" % (point[0], point[1], point[2])
                 prof += "],<br>\n"
-            pointsdata += "}"
+
         if vb:
             prof += "/* Tiles Used: %d */<br>\n" % Tiles
+
+
 
         # Clean up values for output
         d = round(d / 1000, 3)
@@ -748,7 +676,7 @@ def main(pars):
         # Compile the output
         rs = {}
         if debug:
-            resp += "{<br>\n"
+            resp += "{"
 
         # Distances in km
         rs["dist"] = d
@@ -757,11 +685,11 @@ def main(pars):
         rs["level"] = level
         rs["descent"] = descent
         if debug:
-            resp += "\"dist\":%.3f,<br>\n" % rs["dist"]
-            resp += "\"surface\":%.3f,<br>\n" % rs["surface"]
-            resp += "\"ascent\":%.3f,<br>\n" % rs["ascent"]
-            resp += "\"level\":%.3f,<br>\n" % rs["level"]
-            resp += "\"descent\":%.3f,<br>\n" % rs["descent"]
+            resp += "\"dist\":%.3f," % rs["dist"]
+            resp += "\"surface\":%.3f," % rs["surface"]
+            resp += "\"ascent\":%.3f," % rs["ascent"]
+            resp += "\"level\":%.3f,\n" % rs["level"]
+            resp += "\"descent\":%.3f," % rs["descent"]
 
         # Min and max elevations and gradients
         rs["min"] = minEl
@@ -771,110 +699,23 @@ def main(pars):
         rs["maxGr"] = maxGr
         rs["aveGr"] = aveGr
         if debug:
-            resp += "\"min\":%d,<br>\n" % (rs["min"])
-            resp += "\"max\":%d,<br>\n" % (rs["max"])
-            resp += "\"average\":%d,<br>\n" % (rs["average"])
-            resp += "\"minGr\":%.3f,<br>\n" % (rs["minGr"])
-            resp += "\"maxGr\":%.3f,<br>\n" % (rs["maxGr"])
-            resp += "\"aveGr\":%.3f%s<br>\n" % (rs["aveGr"], "," if pr else "")
+            resp += "\"min\":%d," % (rs["min"])
+            resp += "\"max\":%d," % (rs["max"])
+            resp += "\"average\":%d," % (rs["average"])
+            resp += "\"minGr\":%.3f,\n" % (rs["minGr"])
+            resp += "\"maxGr\":%.3f," % (rs["maxGr"])
+            resp += "\"aveGr\":%.3f%s" % (rs["aveGr"], "," if pr else "")
+            print "resp" +  resp
 
-        # If profile, insert the profile data array and the Google Static Image Charts URL
-        if pr:
-            rs["prof"] = points
-            if debug:
-                resp += prof
-            # Google Static Image Charts URL
-            # See https://developers.google.com/chart/image/docs/chart_params
+        src = ""  # "&lt;placeholder&gt;"
 
-            maxEl += 1
-            src = ""  # "&lt;placeholder&gt;"
-
-            # Curvature (optional), terrain
-            for i in range(len(rs["prof"][0]) - 1, 1, -1):
-                for j in range(0, len(rs["prof"])):
-                    if (j == 0) and (src != ""):
-                        src += ","
-                    try:
-                        src += extEncodeGoogle(max(minEl, rs["prof"][j][i]), minEl, maxEl)
-                    except Exception:
-                        src += "__"
-                        if vb:
-                            resp += "/* !!!Error!!!  -  i: %u, j: %u, p: %u */<br>\n" % (i, j, rs["prof"][j][i])
-
-            src = "http://chart.apis.google.com/chart" \
-                  + "?chs=~Width~x~Height~" \
-                  + "&chma=" + ("35" if maxEl >= 1000 else "30") + "," + (
-                      "35" if maxEl * FPM >= 1000 else "30") + ",22,23" \
-                  + "&cht=lc" \
-                  + "&chd=e:" \
-                  + src + "," \
-                  + extEncodeGoogle(minEl, minEl, maxEl) + extEncodeGoogle(minEl, minEl, maxEl) \
-                  + "&chf=bg,s," + white + "|c,lg,90," + sky1 + ",1," + sky2 + ",0" \
-                  + "&chco=" \
-                  + terr + "," \
-                  + ((earth + ",") if curveht != None else "") \
-                  + axes \
-                  + "&chm=" \
-                  + "b," + terr + ",0,1,0" \
-                  + (("|b," + earth + ",1,2,0") if curveht != None else "") \
-                  + "&chxt=x,y,t,r" \
-                  + "&chxs=" \
-                  + "0," + axes + "," + font + ",0,lt," + axes + "," + axes \
-                  + "|1," + axes + "," + font + ",1,lt," + axes + "," + axes \
-                  + "|2," + axes + "," + font + ",0,lt," + axes + "," + axes \
-                  + "|3," + axes + "," + font + ",-1,lt," + axes + "," + axes \
-                  + "&chxtc=0," + str(thick) + "|1," + str(thick) + "|2," + str(thick) + "|3," + str(thick)
-
-            # Axis scales
-            scale = d
-            interval = axisStep(scale, 5)
-            src += "&chxr=0,0," + str(round(scale, 2)) + "," + str(interval)
-
-            scale = MPK * d
-            interval = axisStep(scale, 5)
-            src += "|2,0," + str(round(scale, 2)) + "," + str(interval)
-            scale = maxEl - minEl
-            interval = max(int(round(axisStep(scale, 3))), 1)
-            chxl = "&chxl=0:|km|1:|m"
-            chxp = "&chxp=1,0"
-            for i in range(int(floor(minEl / interval) * interval), maxEl + 1, interval):
-                if i > minEl + interval / 3:
-                    chxl += "|" + str(i)
-                    chxp += "," + str(int(round(100 * (i - minEl) / scale)))
-
-            minEl = int(round(minEl * FPM))
-            maxEl = int(round(maxEl * FPM))
-            scale = maxEl - minEl
-            interval = max(int(round(axisStep(scale, 3))), 1)
-            chxl += "|2:|mi|3:|ft"
-            chxp += "|3,0"
-            for i in range(int(floor(minEl / interval) * interval), maxEl, interval):
-                if i > minEl + interval / 3:
-                    chxl += "|" + str(i)
-                    chxp += "," + str(int(round(100 * (i - minEl) / scale)))
-            src += chxl + chxp
-            rs["url"] = src
-            src = src.replace("&", "&amp;").replace("|", "%7C")
-            if debug:
-                resp += "\"url\":\"%s\"<br>\n" % src
 
         if debug:
-            resp += "}"
-        else:
-            resp = json.dumps(rs, separators=(",", ":"), sort_keys=True)
-
-        if callback:
-            resp = callback + "(" + resp + ");"
-
-        if debug:
-            resp = "<p>Output:<br>\n" + resp + "</p>\n"
-            if pr:
-                resp += "<img src=\"%s\" style=\"width:180mm; height:60mm;\" alt=\"Google Static Image Chart\">\n" % (
-                    src.replace("~Width~", "680").replace("~Height~", "227"))
+            resp = "Output:" + resp + ""
 
             t1 = datetime.now()
             tt = t1 - t0
-            resp += "<p>Time taken: %0.3fs</p>\n" % (tt.seconds + float(tt.microseconds) / 1000000)
+            resp += "\"Time taken\": %0.3f" % (tt.seconds + float(tt.microseconds) / 1000000)+"}"
 
         error = False
 
@@ -893,7 +734,7 @@ def main(pars):
         if debug:
             t1 = datetime.now()
             tt = t1 - t0
-            resp = "<p>Output:&nbsp; %s</p>\n<p>Time taken: %0.3fs</p>\n" % (
+            resp = "Output:\n%sTime taken: %0.3fs" % (
                 resp, tt.seconds + float(tt.microseconds) / 1000000)
 
         error = False
@@ -906,73 +747,14 @@ def main(pars):
                   + datetime.utcfromtimestamp(os.path.getmtime(sys.argv[0])).isoformat(" ")
         page = PageTitle + " - " + version
 
-        if error:
-            resp += "<h2>HELP</h2>\n" \
-                    + "<p>This program calculates from <a href=\"http://www2.jpl.nasa.gov/srtm/\" title=\"Shuttle Radar Topography Mission\" target=\"_blank\">SRTM</a> data either the elevation of a single point or an elevation profile between two points.</p>\n" \
-                    + "<p>When called successfully, the data returned as <abbr title=\"JavaScript Object Notation\">JSON</abbr> is as follows:<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;Either:<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>ht</strong>&nbsp;&nbsp;Point elevation (metres referenced to EGM96)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;Or:<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>dist</strong>&nbsp;&nbsp;Horizontal distance (kilometres)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>surface</strong>&nbsp;&nbsp;Surface distance over the actual terrain (kilometres)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>ascent</strong>&nbsp;&nbsp;Surface distance ascending (kilometres)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>level</strong>&nbsp;&nbsp;Surface distance level (kilometres)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>descent</strong>&nbsp;&nbsp;Surface distance descending (kilometres)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>min</strong>&nbsp;&nbsp;Minimum elevation (metres referenced to EGM96)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>max</strong>&nbsp;&nbsp;Maximum elevation (ditto)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>average</strong>&nbsp;&nbsp;Average elevation (ditto)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>minGr</strong>&nbsp;&nbsp;Minimum gradient (calculated as vertical change in height over horizontal distance)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>maxGr</strong>&nbsp;&nbsp;Maximum gradient (ditto)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>aveGr</strong>&nbsp;&nbsp;Average gradient (ditto)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>prof</strong>&nbsp;&nbsp;An array of profile points (optional)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>url</strong>&nbsp;&nbsp;Google Static Image Charts URL to obtain a profile diagram (optional)<br>\n" \
-                    + "<p>For both a point height and a profile, location parameters must be given as&nbsp;&hellip;<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;<strong>x1</strong>&nbsp;&nbsp;Point or start longitude (signed decimal degrees &gt;= %.1f and &lt; %.1f, referenced to WGS84)<br>\n" % (
-                XMin, XMax) \
-                    + "&nbsp;&nbsp;&nbsp;<strong>y1</strong>&nbsp;&nbsp;Point or start latitude (signed decimal degrees &gt;= %.1f and &lt; %.1f, ditto)<br>\n" % (
-                YMin, YMax) \
-                    + "&hellip;&nbsp;and additionally for a profile&nbsp;&hellip;<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;<strong>x2</strong>&nbsp;&nbsp;End longitude (signed decimal degrees &gt;= %.1f and &lt; %.1f, ditto)<br>\n" % (
-                XMin, XMax) \
-                    + "&nbsp;&nbsp;&nbsp;<strong>y2</strong>&nbsp;&nbsp;End latitude (signed decimal degrees &gt;= %.1f and &lt; %.1f, ditto)<br>\n" % (
-                YMin, YMax) \
-                    + "<p>Optionally, a callback function name can be given as <strong>callback</strong>.&nbsp; The data will then be returned as <span title=\"JSON with Padding\">JSONP</span> which can be loaded directly by a <code>&lt;script&gt;</code> tag</p>\n" \
-                    + "<p>The following parameters are ignored if a second point is not given&nbsp;&hellip;</p>\n" \
-                    + "<p>Optionally, use the parameter <strong>pr=true</strong> to obtain a full profile and a Google Static Image Charts URL for displaying it.</p>" \
-                    + "<p>Optionally, use the parameter <strong>curveht=true</strong> to include the height of curvature of Earth's surface in the returned data.</p>" \
-                    + "<p>Optionally, use the parameter <strong>maxht=true</strong> to have each sample point returned be the maximum, rather than by default the average, of the SRTM heights in the neighbourhood of the point.</p>" \
-                    + "<p>The data columns returned in the optional profile array have the following meaning:<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;Longitude (signed decimal degrees referenced to WGS84)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;Latitude (ditto)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;Height of curvature of Earth's surface (optional, metres referenced to EGM96)<br>\n" \
-                    + "&nbsp;&nbsp;&nbsp;Average, or maximum if specified, height of local terrain (including optional curvature when present, ditto)</p>\n" \
-                    + "<p>Before submitting the URL to Google, <strong>~Width~</strong> and <strong>~Height~</strong> " \
-                    + "must be replaced by suitable dimensions (pixels), the product (multiplication) of the two being less than Google's limit of 300,000&nbsp; -&nbsp; " \
-                    + "see the <a href=\"https://developers.google.com/chart/image/\" title=\"developers.google.com\" target=\"_blank\">Google Static Image Charts API</a> for further information (this service has been deprecated since 2012 but thankfully is still running).</p>\n" \
-                    + "<p>Optionally, use the parameter <strong>debug=true</strong> " \
-                    + "to obtain output as HTML as an aid to debugging.</p>\n"
 
-            page += " - Error"
-        else:
-            page += " - Debug"
-        template = open(os.path.join(os.path.dirname(__file__), TempPath), "r").read()
-        resp = "Content-Type: text/html\n\n" \
-               + template.replace("{{app}}", "MacFH - UK SRTM Elevation Profiler") \
-                   .replace("{{page}}", page) \
-                   .replace("{{x1}}", "%s" % x1) \
-                   .replace("{{y1}}", "%s" % y1) \
-                   .replace("{{x2}}", "%s" % x2) \
-                   .replace("{{y2}}", "%s" % y2) \
-                   .replace("{{cb}}", "%s" % callback) \
-                   .replace("{{pr}}", "%s" % pr) \
-                   .replace("{{cv}}", "%s" % ("True" if curveht != None else "None")) \
-                   .replace("{{mx}}", "%s" % maxht) \
-                   .replace("{{db}}", "%s" % debug) \
-                   .replace("{{resp}}", resp)
     else:
-        resp = "Content-Type: application/json\n\n" + resp
-
+       # resp = "Content-Type: application/json\n\n" + resp
+        print "end I think"
     sys.stdout.write(resp)
+
+    pointsdata += resp
+    pointsdata += "}"
 
     file = open("pointsdata.txt", 'w')
     file.write(pointsdata)
