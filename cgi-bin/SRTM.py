@@ -36,18 +36,10 @@
 #	Height of curvature of Earth's surface (optional, metres referenced to EGM96)
 #	Average or maximum height of terrain (including above when present, ditto)
 #
-# Before submitting the URL to the Google Static Image Charts API, ~Width~ and ~Height~ must be replaced
-# by suitable dimensions in pixels, the product (multiplication) of the two being less than Google's limit
-# of 300,000  -  see the Google Static Image Charts API documentation for details:
-#	https://developers.google.com/chart/image/
-# Note: Google Static Image Charts API has been deprecated by Google since 2012, but they have made unofficial
-# noises about not turning it off or else replacing it with something similar.
-#
 # Usage (without the spaces and line breaks that have been inserted here for clarity):
 #	http://<host>/cgi-bin/SRTM.py ? x1=<x1> & y1=<y1> [ & x2=<x2> & y2=<y2> ]
-#					[ & callback=<callback function name> ]
-#					[ & pr=True ] [ & cv=True ] [ & maxpt=True ]
-#					[ & db=True ]
+#					[ & pointsDataFile=pointsDataFile ]
+#					[ & cv=True ] [ & maxpt=True ]
 #
 # Where:
 #	x1	Longitude of first point (required, signed decimal degrees referenced to WGS84)
@@ -57,12 +49,9 @@
 #	callback	Optionally request the data be returned as a JSONP function call back
 #			with the JSON data as the single argument to the call
 #			(enables the returned data to be read as valid JavaScript by a <script> tag)
-#	pr	Optionally request a full profile array and a Google Static Image Charts URL to draw it
 #	curveht	Optionally include the height of the curvature of Earth's surface in the returned data
 #	maxpt	Optionally, have each sample point returned be the maximum, rather than the default average,
 #			of the SRTM heights in the neighbourhood of the point.
-#	debug	Optionally request output in the form of HTML for debugging purposes
-#	vb	As above, but more verbose
 # And:
 #	Failure to provide any of the first two or four required parameters returns a help message
 
@@ -140,9 +129,8 @@ FPM = 3.2808
 # Geometric mean radius of earth (m)
 Re = float(6371001)
 
-# Chart constants for Google Static Image Charts API
-# Maximum reliable sample limit (determined empirically)
-stLim = 100
+# Maximum reliable sample limit (determined empirically), min value should be 100
+stLim = 400
 # Colors
 black = "000000"
 white = "CCCCCC"
@@ -296,7 +284,7 @@ class SRTMTile:
             else:
                 ht = self.Null
 
-            # print "/* x:%u, y:%u, i:%u, j:%u, hs[0]:%d, hs[1]:%d, hs[2]:%d, hs[3]:%d, nn:%u, ih:%d, ht:%.1f */<br>\n" % ( x, y, i, j, hs[0], hs[1], hs[2], hs[3], nn, ih, ht )
+            #print "/* x:%u, y:%u, i:%u, j:%u, hs[0]:%d, hs[1]:%d, hs[2]:%d, hs[3]:%d, nn:%u, ih:%d, ht:%.1f */<br>\n" % ( x, y, i, j, hs[0], hs[1], hs[2], hs[3], nn, ih, ht )
 
             j += 1
             if j > i:
@@ -318,6 +306,7 @@ class SRTMTile:
             y1 = y0 + 1
             dx = cx - x0
             dy = cy - y0
+            #Note i is incrumented in the call to self.getCleanHt
             hSW = self.getCleanHt(x0, y0)
             hSE = self.getCleanHt(x1, y0)
             hNW = self.getCleanHt(x0, y1)
@@ -411,7 +400,7 @@ def main(pars):
     global Tiles
 
     resp = ""
-    error = x1 = y1 = x2 = y2 = callback = pr = curveht = maxht = debug = vb = par = None
+    error = x1 = y1 = x2 = y2 = pointsDataFile = curveht = maxht = par = None
     args = sys.argv[1:]
 
     print ' '.join(args)
@@ -446,25 +435,20 @@ def main(pars):
         pass
 
     try:
-        #  par = pars.getvalue("callback")
+        #  par = pars.getvalue("pointsDataFile")
         par = (sys.argv[5])
         if not par == 'none':
-            callback = par
-            print "callback is " + callback
+            pointsDataFile = par
+        else:
+            pointsDataFile = "pointsData-default.txt"
+            print "pointsDataFile is " + pointsDataFile
     except Exception:
         pass
 
-    try:
-        # par = pars.getvalue("pr")
-        par = (sys.argv[6])
-        if par.lower() in TRUE:
-            pr = True
-    except Exception:
-        pass
 
     try:
         # par = pars.getvalue("curveht")
-        par = (sys.argv[7])
+        par = (sys.argv[6])
         if par.lower() in TRUE:
             curveht = True
     except Exception:
@@ -472,36 +456,18 @@ def main(pars):
 
     try:
         # par = pars.getvalue("maxht")
-        par = (sys.argv[8])
+        par = (sys.argv[7])
         if par.lower() in TRUE:
             maxht = True
     except Exception:
         pass
 
-    try:
-        # par = pars.getvalue("debug")
-        par = (sys.argv[9])
-        if par.lower() in TRUE:
-            debug = True
-    except Exception:
-        pass
-
-    try:
-        # par = pars.getvalue("vb")
-        par = (sys.argv[10])
-        if par.lower() in TRUE:
-            vb = debug = True
-    except Exception:
-        pass
-
-
-
     if (x1 != None) and (x1 >= XMin) and (x1 < XMax) and (y1 != None) and (y1 >= YMin) and (y1 < YMax) and (
                 x2 != None) and (x2 >= XMin) and (x2 < XMax) and (y2 != None) and (y2 >= YMin) and (y2 < YMax):
         #pointsdata is a JSON representation of the height point information for the profile
-        pointsdata = "\n{\"points\":{"
-        if debug:
-            t0 = datetime.now()
+        pointsdata = "\n{\"points\":["
+
+        t0 = datetime.now()
 
         Tiles = 0
 
@@ -518,22 +484,21 @@ def main(pars):
         dS = d / nS
 
         # Set up profile calculations
-        if pr:
-            nP = min(nS, stLim - 1)
-            stP = aD / nP
-            points = []
-            if debug:
-                prof = "\"prof\":[<br>\n"
-            thisP = 0
-            nextP = 1
-            lastP = aD + 0.1
+        nP = min(nS, stLim - 1)
+        stP = aD / nP
+        points = []
 
-            # Maximum or average sample height
-            if maxht:
-                TrHt = SRTM.Min
-            else:
-                TrHt = 0
-                nTr = 0
+        prof = "\"prof\":[\n"
+        thisP = 0
+        nextP = 1
+        lastP = aD + 0.1
+
+        # Maximum or average sample height
+        if maxht:
+            TrHt = SRTM.Min
+        else:
+            TrHt = 0
+            nTr = 0
 
         stA = aD / nS
         stX = (xyz2.x - xyz1.x) / nS
@@ -554,16 +519,19 @@ def main(pars):
         lastTr = None
 
 
-
+        pointCount = 0
         for i in range(0, nS + 1):
             aS = i * stA
             s = aS * Re
 
             p = XYZ2LL(Triple(xyz1.x + i * stX, xyz1.y + i * stY, xyz1.z + i * stZ))
+          #  print "p.x is: ", p.x , "p.y is: ", p.y
             ll = Duple(degrees(p.x), degrees(p.y))
 
             if curveht != None:
                 curveht = Re * (cos((aD / 2) - aS) - cos(aD / 2))
+
+                #Note i is incrumented in the call to SRTM.getHeight(ll)
                 tr = curveht + SRTM.getHeight(ll)
                 curveht = int(round(curveht))
             else:
@@ -597,66 +565,72 @@ def main(pars):
             lastTr = tr
 
             # Profile
-            if pr:
-                if i and abs(nextP * stP - aS) <= abs(aS - thisP * stP):
-                    if maxht:
-                        point[len(point) - 1] = int(round(TrHt))
-                        TrHt = SRTM.Min
-                    else:
-                        point[len(point) - 1] = int(round(TrHt / nTr))
-                        TrHt = 0
-                        nTr = 0
-                    points.append(point)
-                    if debug:
-                        #****************** This is where the points array are generated
-                        #point[0] = xcoord, point[1] = ycoord, point[2] = curved earth height, point[3] true height
-                        print "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f},\n" % (point[0], point[1], point[2], point[3])
-                        pointsdata +=  "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f},\n" % (point[0], point[1], point[2], point[3])
 
-                        if curveht != None:
-                            prof += "[%.6f,%.6f,%.0f,%.0f],<br>\n" % (point[0], point[1], point[2], point[3])
-                        else:
-                            prof += "[%.6f,%.6f,%.0f],<br>\n" % (point[0], point[1], point[2])
-                    thisP += 1
-                    nextP += 1
-                    lastP = aD + 0.1
-
-                if abs(aS - thisP * stP) < lastP:
-                    lastP = abs(aS - thisP * stP)
-                    if curveht != None:
-                        point = [round(ll.x, 6), round(ll.y, 6), int(round(curveht)), 0]
-                    else:
-                        point = [round(ll.x, 6), round(ll.y, 6), 0]
-
-                # Maximum or average local sample height
+            if i and abs(nextP * stP - aS) <= abs(aS - thisP * stP):
                 if maxht:
-                    TrHt = max(tr, TrHt)
+                    point[len(point) - 1] = int(round(TrHt))
+                    TrHt = SRTM.Min
                 else:
-                    TrHt += tr
-                    nTr += 1
+                    point[len(point) - 1] = int(round(TrHt / nTr))
+                    TrHt = 0
+                    nTr = 0
+                points.append(point)
 
-                if vb:
-                    if curveht != None:
-                        prof += "/* {%d,%.6f,%.6f,%.0f,%.0f} */<br>\n" % (i, ll.x, ll.y, curveht, tr)
-                    else:
-                        prof += "/* {%d,%.6f,%.6f,%.0f} */<br>\n" % (i, ll.x, ll.y, tr)
+                #****************** This is where the points array are generated
+                #point[0] = xcoord, point[1] = ycoord, point[2] = curved earth height, point[3] true height
+                print "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f},\n" % (point[0], point[1], point[2], point[3])
+                pointsdata +=  "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f}" % (point[0], point[1], point[2], point[3])
+                pointCount +=1
+                print "i %f and ns %f",  i, nS
+                if i <= nS -3:
+                    pointsdata +=  ",\n"
+                    pointsUsed = i
+                else:
+                    pointsdata +=  "],\n"
+                    pointsUsed = i
 
-        # If profile, finish last point
-        if pr:
-            if maxht:
-                point[len(point) - 1] = int(round(TrHt))
-            else:
-                point[len(point) - 1] = int(round(TrHt / nTr))
-            points.append(point)
-            if debug:
                 if curveht != None:
-                    prof += "[%.6f,%.6f,%.0f,%.0f]<br>\n" % (point[0], point[1], point[2], point[3])
+                    prof += "[%.6f,%.6f,%.0f,%.0f],<br>\n" % (point[0], point[1], point[2], point[3])
                 else:
-                    prof += "[%.6f,%.6f,%.0f]<br>\n" % (point[0], point[1], point[2])
-                prof += "],<br>\n"
+                    prof += "[%.6f,%.6f,%.0f],<br>\n" % (point[0], point[1], point[2])
+                thisP += 1
+                nextP += 1
+                lastP = aD + 0.1
 
-        if vb:
-            prof += "/* Tiles Used: %d */<br>\n" % Tiles
+            if abs(aS - thisP * stP) < lastP:
+                lastP = abs(aS - thisP * stP)
+                if curveht != None:
+                    point = [round(ll.x, 6), round(ll.y, 6), int(round(curveht)), 0]
+                else:
+                    point = [round(ll.x, 6), round(ll.y, 6), 0]
+
+            # Maximum or average local sample height
+            if maxht:
+                TrHt = max(tr, TrHt)
+            else:
+                TrHt += tr
+                nTr += 1
+
+            if curveht != None:
+                prof += "/* {%d,%.6f,%.6f,%.0f,%.0f} */<br>\n" % (i, ll.x, ll.y, curveht, tr)
+            else:
+                prof += "/* {%d,%.6f,%.6f,%.0f} */<br>\n" % (i, ll.x, ll.y, tr)
+
+
+        if maxht:
+            point[len(point) - 1] = int(round(TrHt))
+        else:
+            point[len(point) - 1] = int(round(TrHt / nTr))
+
+        points.append(point)
+
+        if curveht != None:
+            prof += "[%.6f,%.6f,%.0f,%.0f]<br>\n" % (point[0], point[1], point[2], point[3])
+        else:
+            prof += "[%.6f,%.6f,%.0f]<br>\n" % (point[0], point[1], point[2])
+
+        prof += "],<br>\n"
+        prof += "/* Tiles Used: %d */<br>\n" % Tiles
 
 
 
@@ -675,8 +649,8 @@ def main(pars):
 
         # Compile the output
         rs = {}
-        if debug:
-            resp += "{"
+
+        resp += "{"
 
         # Distances in km
         rs["dist"] = d
@@ -684,12 +658,12 @@ def main(pars):
         rs["ascent"] = ascent
         rs["level"] = level
         rs["descent"] = descent
-        if debug:
-            resp += "\"dist\":%.3f," % rs["dist"]
-            resp += "\"surface\":%.3f," % rs["surface"]
-            resp += "\"ascent\":%.3f," % rs["ascent"]
-            resp += "\"level\":%.3f,\n" % rs["level"]
-            resp += "\"descent\":%.3f," % rs["descent"]
+
+        resp += "\"dist\":%.3f," % rs["dist"]
+        resp += "\"surface\":%.3f," % rs["surface"]
+        resp += "\"ascent\":%.3f," % rs["ascent"]
+        resp += "\"level\":%.3f,\n" % rs["level"]
+        resp += "\"descent\":%.3f," % rs["descent"]
 
         # Min and max elevations and gradients
         rs["min"] = minEl
@@ -698,65 +672,61 @@ def main(pars):
         rs["minGr"] = minGr
         rs["maxGr"] = maxGr
         rs["aveGr"] = aveGr
-        if debug:
-            resp += "\"min\":%d," % (rs["min"])
-            resp += "\"max\":%d," % (rs["max"])
-            resp += "\"average\":%d," % (rs["average"])
-            resp += "\"minGr\":%.3f,\n" % (rs["minGr"])
-            resp += "\"maxGr\":%.3f," % (rs["maxGr"])
-            resp += "\"aveGr\":%.3f%s" % (rs["aveGr"], "," if pr else "")
-            print "resp" +  resp
+        rs["pointsAvailable"] = pointsUsed
+        rs["pointCount"] = pointCount
 
-        src = ""  # "&lt;placeholder&gt;"
+        resp += "\"min\":%d," % (rs["min"])
+        resp += "\"max\":%d," % (rs["max"])
+        resp += "\"average\":%d," % (rs["average"])
+        resp += "\"minGr\":%.3f,\n" % (rs["minGr"])
+        resp += "\"maxGr\":%.3f," % (rs["maxGr"])
+        resp += "\"aveGr\":%.3f%s" % (rs["aveGr"], "," )
+        print "resp" +  resp
 
+        resp = "Output:" + resp + ""
 
-        if debug:
-            resp = "Output:" + resp + ""
-
-            t1 = datetime.now()
-            tt = t1 - t0
-            resp += "\"Time taken\": %0.3f" % (tt.seconds + float(tt.microseconds) / 1000000)+"}"
+        t1 = datetime.now()
+        tt = t1 - t0
+        resp += "\"PointsAvailable\":%.d," % (rs["pointsAvailable"])
+        resp += "\"pointCount\":%.d," % (rs["pointCount"])
+        resp += "\"Time taken\": %0.3f" % (tt.seconds + float(tt.microseconds) / 1000000)+"}"
 
         error = False
 
     elif (x1 != None) and (x1 >= XMin) and (x1 < XMax) and (y1 != None) and (y1 >= YMin) and (y1 < YMax) and (
                 x2 == None) and (y2 == None):
-        if debug:
-            t0 = datetime.now()
+
+        t0 = datetime.now()
 
         # Get spot height for a single point
+        #Note i is incrumented in the call to SRTM.getHeight(ll)
         tr = SRTM.getHeight(Duple(x1, y1))
         resp += "{\"ht\":%.0f}" % tr
-        if callback:
-            resp = callback + "(" + resp + ");"
 
         # Compile the output
-        if debug:
-            t1 = datetime.now()
-            tt = t1 - t0
-            resp = "Output:\n%sTime taken: %0.3fs" % (
-                resp, tt.seconds + float(tt.microseconds) / 1000000)
+
+        t1 = datetime.now()
+        tt = t1 - t0
+        resp = "Output:\n%sTime taken: %0.3fs" % (
+            resp, tt.seconds + float(tt.microseconds) / 1000000)+"}"
 
         error = False
 
     else:
         error = True
 
-    if debug or error:
+    if error:
         version = os.path.basename(sys.argv[0]) + " v2.5, " \
                   + datetime.utcfromtimestamp(os.path.getmtime(sys.argv[0])).isoformat(" ")
         page = PageTitle + " - " + version
 
 
-    else:
-       # resp = "Content-Type: application/json\n\n" + resp
-        print "end I think"
     sys.stdout.write(resp)
 
     pointsdata += resp
     pointsdata += "}"
 
-    file = open("pointsdata.txt", 'w')
+    file = open(pointsDataFile, 'w')
     file.write(pointsdata)
     file.close()
 

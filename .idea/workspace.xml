@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b69bdf7a-2f83-4314-8de4-bb00d7e02573" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/cgi-bin/classes/Config_data.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/cgi-bin/classes/SrtmFile.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/cgi-bin/testfile.txt" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cgi-bin/SRTM.py" afterPath="$PROJECT_DIR$/cgi-bin/SRTM.py" />
     </list>
@@ -26,16 +31,65 @@
       <file leaf-file-name="SRTM.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="84" column="28" selection-start-line="84" selection-start-column="28" selection-end-line="84" selection-end-column="28" />
+            <state relative-caret-position="1373">
+              <caret line="675" column="37" lean-forward="true" selection-start-line="675" selection-start-column="37" selection-end-line="675" selection-end-column="37" />
               <folding>
-                <element signature="e#3638#3647#0" expanded="true" />
+                <element signature="e#2866#2875#0" expanded="true" />
+                <element signature="e#5916#6020#0" expanded="false" />
+                <element signature="e#6099#6374#0" expanded="false" />
+                <element signature="e#6455#7572#0" expanded="false" />
+                <element signature="e#11377#11471#0" expanded="false" />
+                <element signature="e#11556#11664#0" expanded="false" />
+                <element signature="e#12064#12325#0" expanded="false" />
+                <element signature="e#12373#12663#0" expanded="false" />
+                <element signature="e#12721#13236#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>aveGr</find>
+      <find>resp</find>
+      <find>&quot;Time taken</find>
+      <find>level</find>
+      <find>Output:</find>
+      <find>Output</find>
+      <find>:{</find>
+      <find>{</find>
+      <find>nP</find>
+      <find>i</find>
+      <find>getCleanHt</find>
+      <find>getHeight</find>
+      <find>debug</find>
+      <find>vb</find>
+      <find>pr</find>
+      <find>pointsUsed</find>
+      <find>nS</find>
+      <find>SRTM.ARes</find>
+      <find>ARes</find>
+      <find>SRTM3AngRes</find>
+      <find>SRTM3Cols</find>
+      <find>aD:</find>
+      <find>stLim</find>
+      <find>stP</find>
+      <find>pointsdata</find>
+      <find>callback</find>
+      <find>pointsDataFile</find>
+      <find>pr</find>
+      <find>points</find>
+      <find>pointCount</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -44,25 +98,19 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/cgi-bin/2DCoordinates" />
+        <option value="$PROJECT_DIR$/cgi-bin/SrtmFile.py" />
+        <option value="$PROJECT_DIR$/cgi-bin/Config_data.py" />
+        <option value="$PROJECT_DIR$/cgi-bin/classes/Config_data.py" />
+        <option value="$PROJECT_DIR$/cgi-bin/classes/SrtmFile.py" />
         <option value="$PROJECT_DIR$/cgi-bin/SRTM.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="89" />
-    <option name="y" value="45" />
+    <option name="x" value="15" />
+    <option name="y" value="32" />
     <option name="width" value="1400" />
     <option name="height" value="789" />
-  </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
-    <OptionsSetting value="true" id="Add" />
-    <OptionsSetting value="true" id="Remove" />
-    <OptionsSetting value="true" id="Checkout" />
-    <OptionsSetting value="true" id="Update" />
-    <OptionsSetting value="true" id="Status" />
-    <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="0" id="Add" />
-    <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -79,6 +127,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -86,50 +135,8 @@
               <option name="myItemId" value="signal-path-profiler" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="signal-path-profiler" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="signal-path-profiler" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="signal-path-profiler" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="signal-path-profiler" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="signal-path-profiler" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="signal-path-profiler" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Styles" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -149,7 +156,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -157,6 +163,8 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/cgi-bin/classes" />
+      <recent name="$PROJECT_DIR$/cgi-bin" />
       <recent name="$PROJECT_DIR$/Resources/Styles" />
     </key>
   </component>
@@ -365,7 +373,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="signal-path-profiler" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/cgi-bin/SRTM.py" />
-      <option name="PARAMETERS" value="0.123 55.234 1.222 58.254 file_name.txt true true true true true" />
+      <option name="PARAMETERS" value="-1.847441 51.372611 -1.850982 51.036591 pointsdata1.txt true true" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
@@ -393,13 +401,13 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="89" y="45" width="1400" height="789" extended-state="0" />
+    <frame x="15" y="32" width="1400" height="789" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13633068" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32965517" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32965517" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32965517" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32965517" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -409,7 +417,7 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32965517" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32965517" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -448,16 +456,26 @@
     <option name="LAST_COMMIT_MESSAGE" value="changed main to accept command line args" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="5" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -465,9 +483,17 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -475,9 +501,17 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -485,9 +519,17 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -495,9 +537,17 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -505,9 +555,17 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -515,9 +573,197 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -525,7 +771,7 @@
     <entry file="file://$PROJECT_DIR$/Resources/Templates/SRTM.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -533,9 +779,17 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1955">
-          <caret line="115" column="9" selection-start-line="115" selection-start-column="9" selection-end-line="115" selection-end-column="9" />
+          <caret line="115" column="9" lean-forward="false" selection-start-line="115" selection-start-column="9" selection-end-line="115" selection-end-column="9" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -543,9 +797,17 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -553,9 +815,17 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -563,9 +833,17 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -573,9 +851,17 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -583,9 +869,17 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -593,9 +887,17 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -603,9 +905,17 @@
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -613,17 +923,27 @@
     <entry file="file://$PROJECT_DIR$/Resources/Templates/SRTM.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cgi-bin/2DCoordinates" />
+    <entry file="file://$PROJECT_DIR$/cgi-bin/classes/Config_data.py" />
+    <entry file="file://$PROJECT_DIR$/cgi-bin/classes/SrtmFile.py" />
     <entry file="file://$PROJECT_DIR$/cgi-bin/SRTM.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="84" column="28" selection-start-line="84" selection-start-column="28" selection-end-line="84" selection-end-column="28" />
+        <state relative-caret-position="1373">
+          <caret line="675" column="37" lean-forward="true" selection-start-line="675" selection-start-column="37" selection-end-line="675" selection-end-column="37" />
           <folding>
-            <element signature="e#3638#3647#0" expanded="true" />
+            <element signature="e#2866#2875#0" expanded="true" />
+            <element signature="e#5916#6020#0" expanded="false" />
+            <element signature="e#6099#6374#0" expanded="false" />
+            <element signature="e#6455#7572#0" expanded="false" />
+            <element signature="e#11377#11471#0" expanded="false" />
+            <element signature="e#11556#11664#0" expanded="false" />
+            <element signature="e#12064#12325#0" expanded="false" />
+            <element signature="e#12373#12663#0" expanded="false" />
+            <element signature="e#12721#13236#0" expanded="false" />
           </folding>
         </state>
       </provider>
