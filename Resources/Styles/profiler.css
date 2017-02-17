@@ -1,0 +1,58 @@
+﻿/*
+Main CSS file for the propagation prediction application.
+*/
+
+/*====================*/
+/*=== Reset Styles ===*/
+/*====================*/
+/*html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, font, img, ins, kbd, q, s, samp,
+small, strike, sub, sup, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-weight:inherit;
+    font-style:inherit;
+    font-size:100%;
+    font-family:inherit;
+    vertical-align:baseline;
+}
+*/
+html {
+    font-family: "Roboto", "Ubuntu", "Arial", Sans-serif;
+}
+
+body {
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 1em;
+}
+
+#map {
+    width: 95%;
+    height: 500px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#profileDiv{
+    width: 940px;
+}
+
+@media only screen and (max-width: 767px) {
+    /* phones */
+
+    html {
+	background-color: white;
+    }
+    body {
+	width: 100%;
+    }
+}
+

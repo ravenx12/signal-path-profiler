@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+   <meta charset="utf-8">
+   <title>Profiler</title>
+
+   <!-- CSS -->
+   <link rel="stylesheet" href="profiler.css">
+   <link rel="stylesheet" href="../lib/jquery-ui-1.11.4/jquery-ui.min.css">
+   <link rel="stylesheet" href="../lib/bootstrap-3.3.7/css/bootstrap.min.css">
+
+   <!-- JS -->
+   <script type="text/javascript" src="../lib/jquery-3.1.1.min.js"></script>
+     
+   <script type="text/javascript" src="../lib/jquery-ui-1.11.4/jquery-ui.min.js"></script> 
+   <script type="text/javascript" src="../lib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+   <script type="text/javascript" src="profiler.js"></script>
+   <script type="text/javascript" src="../lib/plotly.js/dist/plotly.min.js"></script>
+
+<script>
+document.write('<style>body { visibility: hidden; } </style>');
+</script>
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    initFadeIn();
+});
+
+function initFadeIn() {
+    jQuery("body").css("visibility","visible");
+    jQuery("body").css("display","none");
+    jQuery("body").fadeIn(10);
+}
+</script>
+
+</head>
+
+<body style="background-color: #f5efe6">
+
+	<h2><p align="center">Profiler</p></h2>
+
+	<div class="container">
+		<div id="row" style="background-color: white;">
+
+			<div class="row">&nbsp;</div>
+
+			<div class="row">
+				<div class="col-md-7">
+				<div id="map"></div>
+				</div>
+				<div class="col-md-5">
+					<div class="panel panel-default">
+						<div class="panel-heading">Transmit Site</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-6">
+									<label for="tx_lat">Lat:</label>
+									<input type="text" size="8" id="txlat" name="txlat">
+								</div>
+								<div class="col-md-6">
+									<label for="tx_lat">Lon:</label>
+									<input type="text" size="8" id="txlng" name="txlng"> 
+								</div>
+							</div>				
+							<p></p>
+							<p style="text-align:left"><font color="blue">NB: Use '-' for South/West</font></p>  
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">Receive Site</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-6">
+									<label for="rx_lat">Lat:</label>
+									<input type="text" size="8" id="rxlat" name="rxlat">
+								</div>
+								<div class="col-md-6">
+									<label for="rx_lng">Lon:</label>
+									<input type="text" size="8" id="rxlng" name="rxlng"> 
+								</div>
+							</div>
+							<p></p>
+							<p style="text-align:left"><font color="blue">NB: Use '-' for South/West</font></p>  
+						</div>
+					</div>
+					
+					<div class="row">&nbsp;</div>
+					<div class="row">
+						<div style="text-align: right" class="col-md-7">
+						</div>
+						
+						<div style="text-align: right" class="col-md-3">
+							<button type="submit" class="btn btn-primary" id="btnSubmit">
+								Create Profile
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>						
+	
+			<div class="row">&nbsp;</div>
+
+			<div class="row">				
+				<div id="profileDiv" style="margin:0px auto;display:block; height: 700px"><!-- Plotly chart will be drawn inside this DIV --></div>
+			</div>		
+			<div class="col-md-1">
+				&nbsp;
+			</div>
+		</div>
+	</div>
+	<script async defer
+	    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCt81jnJdOA9F7EV5sJao9clNKgzxfung4&callback=initMap">
+	</script>
+	<br/>
+</body>
+</html>
