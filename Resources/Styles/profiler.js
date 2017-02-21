@@ -31,6 +31,11 @@ $(document).ready(function() {
 	    update();
 	});
 	
+	// Page has loaded now see if we have data in the URL
+	if (/x1/.test(window.location.href)) {
+		profileOnPageLoad();
+	}
+	
 	$("#btnSubmit").click(function(){
 		var txLat = $("#txlat").val();
 		var txLng = $("#txlng").val();
@@ -38,10 +43,10 @@ $(document).ready(function() {
 		var rxLng = $("#rxlng").val();
 		
 /*
-		Cookies.set('txlat', txLat, { expires: 3650, path: '' });
-		Cookies.set('txlng', txLng, { expires: 3650, path: '' });
-		Cookies.set('rxlat', rxLat, { expires: 3650, path: '' });
-		Cookies.set('rxlng', rxLng, { expires: 3650, path: '' }); 
+		Cookies.set('ptxlat', txLat, { expires: 3650, path: '' });
+		Cookies.set('ptxlng', txLng, { expires: 3650, path: '' });
+		Cookies.set('prxlat', rxLat, { expires: 3650, path: '' });
+		Cookies.set('prxlng', rxLng, { expires: 3650, path: '' }); 
 */
 		
 		var getData = "?x1=" + txLng + "&y1=" + txLat  + "&x2=" + rxLng + "&y2=" + rxLat;
@@ -54,6 +59,8 @@ $(document).ready(function() {
                 $("#loader").show();
             },
 		    success: function(response){
+   			    history.pushState({}, null, "http://www.predtest.uk/profiler/profiler.html" + getData)
+
                 $("#loader").hide();
                 console.log(response);
 			    if ( (response != null) ) {
@@ -70,30 +77,42 @@ $(document).ready(function() {
 		});
 	});
 
+	// URL was pasted in to the browser so we're creating a saved url plot.
+	// A. Don't use any of the values on the page, they're all in the URL
+	// B. Don't save anything or update the basic page
+	function profileOnPageLoad() {
+		var txLat = getURLParameter("y1");
+		var txLng = getURLParameter("x1");
+		var rxLat = getURLParameter("y2");
+		var rxLng = getURLParameter("x2");
+		var getData = "?x1=" + txLng + "&y1=" + txLat  + "&x2=" + rxLng + "&y2=" + rxLat;
+		
+	    $.ajax({
+		    url: "/cgi-bin/srtm.py" + getData,
+		    type: "GET",
+		    beforeSend: function(){
+                $("#loader").show();
+            },
+		    success: function(response){
+   			    history.pushState({}, null, "http://www.predtest.uk/profiler/profiler.html" + getData)
 
-	function createProfile(data) {
-/*		var data = {
-			"points":[{"xcoord":-1.847441,"ycoord":51.372611,"curheight":0,"trueheight":256},
-{"xcoord":-1.847450,"ycoord":51.371779,"curheight":0,"trueheight":224},
-{"xcoord":-1.847459,"ycoord":51.370948,"curheight":1,"trueheight":207},
-{"xcoord":-1.847467,"ycoord":51.370116,"curheight":1,"trueheight":204},
-{"xcoord":-1.847476,"ycoord":51.369284,"curheight":1,"trueheight":193},
-{"xcoord":-1.847485,"ycoord":51.368452,"curheight":1,"trueheight":176},
-{"xcoord":-1.847565,"ycoord":51.360967,"curheight":4,"trueheight":141},
-{"xcoord":-1.847573,"ycoord":51.360135,"curheight":4,"trueheight":137},
-{"xcoord":-1.847582,"ycoord":51.359303,"curheight":4,"trueheight":136},
-{"xcoord":-1.847591,"ycoord":51.358472,"curheight":4,"trueheight":135},
-{"xcoord":-1.847600,"ycoord":51.357640,"curheight":5,"trueheight":136},
-{"xcoord":-1.850938,"ycoord":51.040750,"curheight":1,"trueheight":69},
-{"xcoord":-1.850947,"ycoord":51.039918,"curheight":1,"trueheight":63},
-{"xcoord":-1.850956,"ycoord":51.039086,"curheight":1,"trueheight":60},
-{"xcoord":-1.850965,"ycoord":51.038254,"curheight":1,"trueheight":60},
-{"xcoord":-1.850973,"ycoord":51.037423,"curheight":0,"trueheight":61}],
-Output:{"dist":37.365,"surface":37.413,"ascent":15.468,"level":0.000,
-"descent":21.945,"min":59,"max":256,"average":135,"minGr":-0.240,
-"maxGr":0.343,"aveGr":0.005,"Time taken": 0.027}
-};
-*/		
+                $("#loader").hide();
+                console.log(response);
+			    if ( (response != null) ) {
+                	createProfile(response);
+			    } else {
+				    alert("Error: I'm sorry there was a problem generating the profile");
+			    }
+		    },
+            error: function (error) {
+	            console.log(error);
+                $("#loader").hide();
+			    alert("Error: I'm sorry there was a problem generating the profile");
+            }	
+		});
+	}
+
+	function createProfile(data) {		
 		var x = [];
 		var y = [];
 		var z = [];
@@ -237,3 +256,7 @@ function initMap() {
 	    document.getElementById("rxlng").value = this.getPosition().lng().toFixed(4);
 	});	
 }	
+
+function getURLParameter(name) {
+  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+}
