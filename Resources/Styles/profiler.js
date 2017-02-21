@@ -1,4 +1,4 @@
-﻿'use strict'
+'use strict'
 
 var map = undefined;
 var txMarker = undefined;
@@ -98,9 +98,9 @@ Output:{"dist":37.365,"surface":37.413,"ascent":15.468,"level":0.000,
 		var y = [];
 		var z = [];
 		
-		var len = data.length;
-		var startHeight = data[0].trueheight - data[0].curheight;
-		var endHeight = data[len-1].trueheight - data[len-1].curheight;
+		var len = data.points.length;
+		var startHeight = data.points[0].trueheight - data.points[0].curheight;
+		var endHeight = data.points[len-1].trueheight - data.points[len-1].curheight;
 		var difference = 0;
 		var move = startHeight;
 	
@@ -110,10 +110,10 @@ Output:{"dist":37.365,"surface":37.413,"ascent":15.468,"level":0.000,
 		
 		var slopeDiff = difference / len;
 		
-			var title = 'Point To Point Profile (' + data[0].ycoord + ' ' + data[0].xcoord + ' to ' + data[len-1].ycoord + ' ' + data[len-1].xcoord + ')';
+		var title = 'Point To Point Profile (' + data.points[0].ycoord + ' ' + data.points[0].xcoord + ' to ' + data.points[len-1].ycoord + ' ' + data.points[len-1].xcoord + ')';
 		for (var i = 0; i < len; i++) {
 			x.push(i);
-			y.push(data[i].trueheight - data[i].curheight);
+			y.push(data.points[i].trueheight - data.points[i].curheight);
 			z.push(move);
 			if (difference < 0) { // need to add our difference
 				move += -slopeDiff
@@ -143,8 +143,7 @@ Output:{"dist":37.365,"surface":37.413,"ascent":15.468,"level":0.000,
 			title: title,
 			showlegend: false,
 			xaxis: {
-				//title: '<-- Distance: ' + data.Output.dist + 'km -->',
-				title: ' to be calculated!',
+				title: '<-- Distance: ' + data.output.dist + 'km -->',
 			    showticklabels: false
 	  		},
 	  		yaxis: {
