@@ -80,7 +80,8 @@ import array
 import json
 import string
 import zipfile
-
+import StringIO as io
+from StringIO import StringIO
 from datetime import datetime, timedelta
 
 from math import acos
@@ -93,6 +94,7 @@ from math import ceil
 from math import floor
 from math import log
 from math import sqrt
+
 
 # SRTM constants
 # Longitude and latitude tile coverage limits
@@ -175,7 +177,7 @@ class SRTMTile:
 
     def __init__(self, lon, lat):
         if lon and lat:
-            getSRTMData(lon, lat)
+            SRTMTile.getSRTMData(lon, lat)
         else:
             self.N = self.D = None
 
@@ -462,10 +464,11 @@ def main(pars):
     except Exception:
         pass
 
+    pointsdata = "{\"points\":["
     if (x1 != None) and (x1 >= XMin) and (x1 < XMax) and (y1 != None) and (y1 >= YMin) and (y1 < YMax) and (
                 x2 != None) and (x2 >= XMin) and (x2 < XMax) and (y2 != None) and (y2 >= YMin) and (y2 < YMax):
         #pointsdata is a JSON representation of the height point information for the profile
-        pointsdata = "\n{\"points\":["
+       # pointsdata = "\n{\"points\":["
 
         t0 = datetime.now()
 
@@ -582,11 +585,11 @@ def main(pars):
                 pointsdata +=  "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f}" % (point[0], point[1], point[2], point[3])
                 pointCount +=1
                 print "i %f and ns %f",  i, nS
-                if i <= nS -3:
-                    pointsdata +=  ",\n"
+                if i < nS :
+                    pointsdata +=  ","
                     pointsUsed = i
                 else:
-                    pointsdata +=  "],\n"
+                    pointsdata +=  "],"
                     pointsUsed = i
 
                 if curveht != None:
@@ -625,12 +628,12 @@ def main(pars):
         points.append(point)
 
         if curveht != None:
-            prof += "[%.6f,%.6f,%.0f,%.0f]<br>\n" % (point[0], point[1], point[2], point[3])
+            prof += "[%.6f,%.6f,%.0f,%.0f]" % (point[0], point[1], point[2], point[3])
         else:
-            prof += "[%.6f,%.6f,%.0f]<br>\n" % (point[0], point[1], point[2])
+            prof += "[%.6f,%.6f,%.0f]<br>" % (point[0], point[1], point[2])
 
         prof += "],<br>\n"
-        prof += "/* Tiles Used: %d */<br>\n" % Tiles
+        prof += "/* Tiles Used: %d */<br>" % Tiles
 
 
 
@@ -662,7 +665,7 @@ def main(pars):
         resp += "\"dist\":%.3f," % rs["dist"]
         resp += "\"surface\":%.3f," % rs["surface"]
         resp += "\"ascent\":%.3f," % rs["ascent"]
-        resp += "\"level\":%.3f,\n" % rs["level"]
+        resp += "\"level\":%.3f," % rs["level"]
         resp += "\"descent\":%.3f," % rs["descent"]
 
         # Min and max elevations and gradients
@@ -678,10 +681,10 @@ def main(pars):
         resp += "\"min\":%d," % (rs["min"])
         resp += "\"max\":%d," % (rs["max"])
         resp += "\"average\":%d," % (rs["average"])
-        resp += "\"minGr\":%.3f,\n" % (rs["minGr"])
+        resp += "\"minGr\":%.3f," % (rs["minGr"])
         resp += "\"maxGr\":%.3f," % (rs["maxGr"])
         resp += "\"aveGr\":%.3f%s" % (rs["aveGr"], "," )
-        print "resp" +  resp
+      #  print "resp" +  resp
 
         resp = "Output:" + resp + ""
 
@@ -707,7 +710,7 @@ def main(pars):
 
         t1 = datetime.now()
         tt = t1 - t0
-        resp = "Output:\n%sTime taken: %0.3fs" % (
+        resp = "Output:%sTime taken: %0.3fs" % (
             resp, tt.seconds + float(tt.microseconds) / 1000000)+"}"
 
         error = False
@@ -725,10 +728,14 @@ def main(pars):
 
     pointsdata += resp
     pointsdata += "}"
+  #  print pointsdata
+
 
     file = open(pointsDataFile, 'w')
     file.write(pointsdata)
+
     file.close()
 
+    print json.dumps(pointsdata)
 
 main(cgi.FieldStorage())

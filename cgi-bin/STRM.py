@@ -691,6 +691,8 @@ def main():
     pointsdata += resp
     pointsdata += "}"
 
+    d = json.loads(pointsdata)
+    print d ['points']
     print "Content-Type: application/json\n\n"
     print json.dumps(profilePoints)
 
