@@ -1,4 +1,4 @@
-﻿#!/usr/bin/python
+#!/usr/bin/python
 
 #
 # SRTM.py v2.5, for Python 2.7
@@ -22,7 +22,6 @@
 #		minGr	Minimum gradient (calculated as vertical change in height over horizontal distance)
 #		maxGr	Maximum gradient (ditto)
 #		aveGr	Average gradient (ditto)
-#		prof	An array of profile points (optional)
 #		url	Google Static Image Charts URL to obtain a profile diagram (optional)
 #
 # Optionally for the profile, an array of up to 100 samples can be returned both as JSON and as a Google Static
@@ -378,15 +377,12 @@ def main():
 
     pars = cgi.FieldStorage()	# data from html/rest call
 
-    resp = ""
     error = x1 = y1 = x2 = y2 = pointsDataFile = par = None
     args = sys.argv[1:]
-    pointsdata = ""
     curveht = True
     maxht = True
     profilePoints = []
-
-    #resp = pars["x1"].value + " " + pars["y1"].value + " " + pars["y2"].value + " " + pars["y2"].value + "\n\n"
+    output = {}
 
     #print ' '.join(args)
     try:
@@ -395,7 +391,6 @@ def main():
         #x1 = float(sys.argv[1])
     except Exception:
         error = True
-        resp += "<p>ERROR: required x1 parameter missing!</p>\n"
 
     try:
         y1 = float(pars["y1"].value)
@@ -403,15 +398,13 @@ def main():
         #y1 = float(sys.argv[2])
     except Exception:
         error = True
-        resp += "<p>ERROR: required y1 parameter missing!</p>\n"
 
     try:
         x2 = float(pars["x2"].value)
         #x2 = float(pars.getvalue("x2"))
         #x2 = float(sys.argv[3])
     except Exception:
-        error = True
-        # resp	+= "<p>ERROR: required x2 parameter missing!</p>\n"
+        #error = True
         pass
 
     try:
@@ -420,15 +413,11 @@ def main():
         #y2 = float(sys.argv[4])
     except Exception:
         # error	= True
-        # resp	+= "<p>ERROR: required y2 parameter missing!</p>\n"
         pass
 
 
-    #if (x1 != None) and (x1 >= XMin) and (x1 < XMax) and (y1 != None) and (y1 >= YMin) and (y1 < YMax) and (
-    #            x2 != None) and (x2 >= XMin) and (x2 < XMax) and (y2 != None) and (y2 >= YMin) and (y2 < YMax):
+    #if (x1 != None) and (x1 >= XMin) and (x1 < XMax) and (y1 != None) and (y1 >= YMin) and (y1 < YMax) and (x2 != None) and (x2 >= XMin) and (x2 < XMax) and (y2 != None) and (y2 >= YMin) and (y2 < YMax):
     if (x1 != None):
-        #pointsdata is a JSON representation of the height point information for the profile
-        pointsdata = "{\"points\":["
 
         t0 = datetime.now()
 
@@ -451,7 +440,6 @@ def main():
         stP = aD / nP
         points = []
 
-        prof = "\"prof\":[\n"
         thisP = 0
         nextP = 1
         lastP = aD + 0.1
@@ -481,14 +469,13 @@ def main():
         surface = 0
         lastTr = None
 
-
         pointCount = 0
         for i in range(0, nS + 1):
             aS = i * stA
             s = aS * Re
 
             p = XYZ2LL(Triple(xyz1.x + i * stX, xyz1.y + i * stY, xyz1.z + i * stZ))
-          #  print "p.x is: ", p.x , "p.y is: ", p.y
+            #  print "p.x is: ", p.x , "p.y is: ", p.y
             ll = Duple(degrees(p.x), degrees(p.y))
 
             if curveht != None:
@@ -542,21 +529,14 @@ def main():
                 #****************** This is where the points array are generated
                 #point[0] = xcoord, point[1] = ycoord, point[2] = curved earth height, point[3] true height
                 #print "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f},\n" % (point[0], point[1], point[2], point[3])
-                pointsdata +=  "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f}" % (point[0], point[1], point[2], point[3])
                 profilePoints.append({'xcoord':point[0], 'ycoord':point[1],'curheight':point[2],'trueheight':point[3]})
                 pointCount +=1
                 #print "i %f and ns %f",  i, nS
                 if i <= nS -3:
-                    pointsdata +=  ","
                     pointsUsed = i
                 else:
-                    pointsdata +=  "],"
                     pointsUsed = i
 
-                if curveht != None:
-                    prof += "[%.6f,%.6f,%.0f,%.0f]," % (point[0], point[1], point[2], point[3])
-                else:
-                    prof += "[%.6f,%.6f,%.0f]," % (point[0], point[1], point[2])
                 thisP += 1
                 nextP += 1
                 lastP = aD + 0.1
@@ -575,28 +555,12 @@ def main():
                 TrHt += tr
                 nTr += 1
 
-            if curveht != None:
-                prof += "/* {%d,%.6f,%.6f,%.0f,%.0f} */<br>\n" % (i, ll.x, ll.y, curveht, tr)
-            else:
-                prof += "/* {%d,%.6f,%.6f,%.0f} */<br>\n" % (i, ll.x, ll.y, tr)
-
-
         if maxht:
             point[len(point) - 1] = int(round(TrHt))
         else:
             point[len(point) - 1] = int(round(TrHt / nTr))
 
         points.append(point)
-
-        if curveht != None:
-            prof += "[%.6f,%.6f,%.0f,%.0f]<br>\n" % (point[0], point[1], point[2], point[3])
-        else:
-            prof += "[%.6f,%.6f,%.0f]<br>\n" % (point[0], point[1], point[2])
-
-        prof += "],<br>\n"
-        prof += "/* Tiles Used: %d */<br>\n" % Tiles
-
-
 
         # Clean up values for output
         d = round(d / 1000, 3)
@@ -611,87 +575,41 @@ def main():
         maxGr = round(maxGr, 3)
         aveGr = round(aveGr / nS, 3)
 
-        # Compile the output
-        rs = {}
-
-        resp += "{"
-
-        # Distances in km
-        rs["dist"] = d
-        rs["surface"] = surface
-        rs["ascent"] = ascent
-        rs["level"] = level
-        rs["descent"] = descent
-
-        resp += "\"dist\":%.3f," % rs["dist"]
-        resp += "\"surface\":%.3f," % rs["surface"]
-        resp += "\"ascent\":%.3f," % rs["ascent"]
-        resp += "\"level\":%.3f," % rs["level"]
-        resp += "\"descent\":%.3f," % rs["descent"]
-
-        # Min and max elevations and gradients
-        rs["min"] = minEl
-        rs["max"] = maxEl
-        rs["average"] = average
-        rs["minGr"] = minGr
-        rs["maxGr"] = maxGr
-        rs["aveGr"] = aveGr
-        rs["pointsAvailable"] = pointsUsed
-        rs["pointCount"] = pointCount
-
-        resp += "\"min\":%d," % (rs["min"])
-        resp += "\"max\":%d," % (rs["max"])
-        resp += "\"average\":%d," % (rs["average"])
-        resp += "\"minGr\":%.3f," % (rs["minGr"])
-        resp += "\"maxGr\":%.3f," % (rs["maxGr"])
-        resp += "\"aveGr\":%.3f%s" % (rs["aveGr"], "," )
-        #print "resp" +  resp
-
-        resp = "Output:" + resp + ""
-
+        # Compile the output, distances in km
         t1 = datetime.now()
         tt = t1 - t0
-        resp += "\"PointsAvailable\":%.d," % (rs["pointsAvailable"])
-        resp += "\"pointCount\":%.d," % (rs["pointCount"])
-        resp += "\"Time taken\": %0.3f" % (tt.seconds + float(tt.microseconds) / 1000000)+"}"
+        output = {"pointsAvailable": pointsUsed, "pointCount": pointCount, "dist": d, "surface": surface, "ascent": ascent, "level": level, 
+        "descent": descent, "min": minEl, "max": maxEl, "aveGr": aveGr, "minGr": minGr, "average": average, 
+        "timeTaken": (tt.seconds + float(tt.microseconds) / 1000000)}
 
         error = False
 
-    elif (x1 != None) and (x1 >= XMin) and (x1 < XMax) and (y1 != None) and (y1 >= YMin) and (y1 < YMax) and (
-                x2 == None) and (y2 == None):
+    elif (x1 != None) and (x1 >= XMin) and (x1 < XMax) and (y1 != None) and (y1 >= YMin) and (y1 < YMax) and (x2 == None) and (y2 == None):
       
         t0 = datetime.now()
 
         # Get spot height for a single point
         #Note i is incrumented in the call to SRTM.getHeight(ll)
         tr = SRTM.getHeight(Duple(x1, y1))
-        resp += "{\"ht\":%.0f}" % tr
 
         # Compile the output
-
         t1 = datetime.now()
         tt = t1 - t0
-        resp = "Output:\n%sTime taken: %0.3fs" % (
-            resp, tt.seconds + float(tt.microseconds) / 1000000)+"}"
+        profilePoints.append({"ht":tr, "timeTaken":tt.seconds + float(tt.microseconds) / 1000000})
 
         error = False
 
     else:
-        resp += "error"
         error = True
 
     if error:
         version = os.path.basename(sys.argv[0]) + " v2.5, " \
                   + datetime.utcfromtimestamp(os.path.getmtime(sys.argv[0])).isoformat(" ")
         #page = PageTitle + " - " + version
+        profilePoints.append({output:"error", "points":"error"})
 
-
-    #sys.stdout.write(resp)
-
-    pointsdata += resp
-    pointsdata += "}"
-
+    data = {"points":profilePoints, "output":output}
     print "Content-Type: application/json\n\n"
-    print json.dumps(profilePoints)
+    print json.dumps(data)
 
 main()
