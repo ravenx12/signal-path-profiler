@@ -529,7 +529,8 @@ def main():
                 #****************** This is where the points array are generated
                 #point[0] = xcoord, point[1] = ycoord, point[2] = curved earth height, point[3] true height
                 #print "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f},\n" % (point[0], point[1], point[2], point[3])
-                profilePoints.append({'xcoord':point[0], 'ycoord':point[1],'curheight':point[2],'trueheight':point[3]})
+                profilePoints.append({'xcoord':round(point[0],3), 'ycoord':round(point[1],3),
+                                      'curheight':round(point[2],3),'trueheight':round(point[3],3)})
                 pointCount +=1
                 #print "i %f and ns %f",  i, nS
                 if i <= nS -3:
@@ -606,20 +607,12 @@ def main():
         version = os.path.basename(sys.argv[0]) + " v2.5, " \
                   + datetime.utcfromtimestamp(os.path.getmtime(sys.argv[0])).isoformat(" ")
         #page = PageTitle + " - " + version
-        profilePoints.append({output:"error", "points":"error"})
-
-<<<<<<< HEAD:cgi-bin/STRM.py
+       # profilePoints.append({output:"error", "points":"error"})
 
     #sys.stdout.write(resp)
 
-    pointsdata += resp
-    pointsdata += "}"
-
-    d = json.loads(pointsdata)
-    print d ['points']
-=======
     data = {"points":profilePoints, "output":output}
->>>>>>> 525cb91afbf1a3209b1ead86ea9d875324f526d3:cgi-bin/srtm.py
+
     print "Content-Type: application/json\n\n"
     print json.dumps(data)
 
