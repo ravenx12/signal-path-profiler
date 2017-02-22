@@ -386,21 +386,21 @@ def main():
 
     #print ' '.join(args)
     try:
-        x1 = float(pars["x1"].value)
+        x1 = float(pars["txLng"].value)
         #x1 = float(pars.getvalue("x1"))
         #x1 = float(sys.argv[1])
     except Exception:
         error = True
 
     try:
-        y1 = float(pars["y1"].value)
+        y1 = float(pars["txLat"].value)
         #y1 = float(pars.getvalue("y1"))
         #y1 = float(sys.argv[2])
     except Exception:
         error = True
 
     try:
-        x2 = float(pars["x2"].value)
+        x2 = float(pars["rxLng"].value)
         #x2 = float(pars.getvalue("x2"))
         #x2 = float(sys.argv[3])
     except Exception:
@@ -408,7 +408,7 @@ def main():
         pass
 
     try:
-        y2 = float(pars["y2"].value)
+        y2 = float(pars["rxLat"].value)
         #y2 = float(pars.getvalue("y2"))
         #y2 = float(sys.argv[4])
     except Exception:
@@ -438,7 +438,6 @@ def main():
         # Set up profile calculations
         nP = min(nS, stLim - 1)
         stP = aD / nP
-        points = []
 
         thisP = 0
         nextP = 1
@@ -524,15 +523,11 @@ def main():
                     point[len(point) - 1] = int(round(TrHt / nTr))
                     TrHt = 0
                     nTr = 0
-                points.append(point)
 
                 #****************** This is where the points array are generated
-                #point[0] = xcoord, point[1] = ycoord, point[2] = curved earth height, point[3] true height
-                #print "{\"xcoord\":%.6f,\"ycoord\":%.6f,\"curheight\":%.0f,\"trueheight\":%.0f},\n" % (point[0], point[1], point[2], point[3])
                 profilePoints.append({'xcoord':round(point[0],3), 'ycoord':round(point[1],3),
                                       'curheight':round(point[2],3),'trueheight':round(point[3],3)})
                 pointCount +=1
-                #print "i %f and ns %f",  i, nS
                 if i <= nS -3:
                     pointsUsed = i
                 else:
@@ -560,8 +555,6 @@ def main():
             point[len(point) - 1] = int(round(TrHt))
         else:
             point[len(point) - 1] = int(round(TrHt / nTr))
-
-        points.append(point)
 
         # Clean up values for output
         d = round(d / 1000, 3)
@@ -606,10 +599,6 @@ def main():
     if error:
         version = os.path.basename(sys.argv[0]) + " v2.5, " \
                   + datetime.utcfromtimestamp(os.path.getmtime(sys.argv[0])).isoformat(" ")
-        #page = PageTitle + " - " + version
-       # profilePoints.append({output:"error", "points":"error"})
-
-    #sys.stdout.write(resp)
 
     data = {"points":profilePoints, "output":output}
 

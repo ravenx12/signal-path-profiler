@@ -4,17 +4,6 @@ var map = undefined;
 var txMarker = undefined;
 var rxMarker = undefined;
 
-var defaultColour = [['0.0', 'rgb(255,255,255)'],
-				    ['0.111111111111', 'rgb(255,255,204)'],
-				    ['0.222222222222', 'rgb(0,255,255)'],
-				    ['0.333333333333', 'rgb(0,191,255)'],
-				    ['0.444444444444', 'rgb(135,206,250)'],
-				    ['0.555555555556', 'rgb(191,255,0)'],
-				    ['0.666666666667', 'rgb(255,255,0)'],
-				    ['0.777777777778', 'rgb(255,153,51)'],
-				    ['0.888888888889', 'rgb(129,0,0)'],
-				    ['1.0', 'rgb(255,0,0)']];
-
 $(document).ready(function() {    	 
 	$("#loader").hide();
 	
@@ -32,7 +21,7 @@ $(document).ready(function() {
 	});
 	
 	// Page has loaded now see if we have data in the URL
-	if (/x1/.test(window.location.href)) {
+	if (/txLng/.test(window.location.href)) {
 		profileOnPageLoad();
 	}
 	
@@ -42,14 +31,12 @@ $(document).ready(function() {
 		var rxLat = $("#rxlat").val();
 		var rxLng = $("#rxlng").val();
 		
-/*
-		Cookies.set('ptxlat', txLat, { expires: 3650, path: '' });
-		Cookies.set('ptxlng', txLng, { expires: 3650, path: '' });
-		Cookies.set('prxlat', rxLat, { expires: 3650, path: '' });
-		Cookies.set('prxlng', rxLng, { expires: 3650, path: '' }); 
-*/
+		Cookies.set('txlatProfile', txLat, { expires: 3650, path: '' });
+		Cookies.set('txlngProfile', txLng, { expires: 3650, path: '' });
+		Cookies.set('rxlatProfile', rxLat, { expires: 3650, path: '' });
+		Cookies.set('rxlngProfile', rxLng, { expires: 3650, path: '' }); 
 		
-		var getData = "?x1=" + txLng + "&y1=" + txLat  + "&x2=" + rxLng + "&y2=" + rxLat;
+		var getData = "?txLng=" + txLng + "&txLat=" + txLat  + "&rxLng=" + rxLng + "&rxLat=" + rxLat;
 		console.log(getData);
 		
 	    $.ajax({
@@ -81,11 +68,11 @@ $(document).ready(function() {
 	// A. Don't use any of the values on the page, they're all in the URL
 	// B. Don't save anything or update the basic page
 	function profileOnPageLoad() {
-		var txLat = getURLParameter("y1");
-		var txLng = getURLParameter("x1");
-		var rxLat = getURLParameter("y2");
-		var rxLng = getURLParameter("x2");
-		var getData = "?x1=" + txLng + "&y1=" + txLat  + "&x2=" + rxLng + "&y2=" + rxLat;
+		var txLat = getURLParameter("txLat");
+		var txLng = getURLParameter("txLng");
+		var rxLat = getURLParameter("rxLat");
+		var rxLng = getURLParameter("rxLng");
+		var getData = "?txLng=" + txLng + "&txLat=" + txLat  + "&rxLng=" + rxLng + "&rxLat=" + rxLat;
 		
 	    $.ajax({
 		    url: "/cgi-bin/srtm.py" + getData,
@@ -188,16 +175,17 @@ function updateMarkers(txlat, txlng, rxlat, rxlng) {
 function initMap() {	
 	var uluru = {lat: 53, lng: -1};
 
+	var txlat = parseFloat(Cookies.get('txlatProfile')) || 51.75;
+	var txlng = parseFloat(Cookies.get('txlngProfile')) || 0.47;
+	var rxlat = parseFloat(Cookies.get('rxlatProfile')) || 51.4728;
+	var rxlng = parseFloat(Cookies.get('rxlngProfile')) || 0.1064;
+
 /*
-	var txlat = parseFloat(Cookies.get('txlat')) || 51.75;
-	var txlng = parseFloat(Cookies.get('txlng')) || 0.47;
-	var rxlat = parseFloat(Cookies.get('rxlat')) || 38.87;
-	var rxlng = parseFloat(Cookies.get('rxlng')) || -77.02;
-*/
-	var txlat = 51.4917;
-	var txlng = -0.0127;
+	var txlat = 51.5532;
+	var txlng = 0.1686;
 	var rxlat = 52.4777;
 	var rxlng = -1.8931;
+*/
 
 	var tx = {lat: txlat, lng: txlng};
 	var rx = {lat: rxlat, lng: rxlng};
@@ -229,7 +217,7 @@ function initMap() {
 	  map: map
 	});
 	
-     var inittxlat = parseFloat(txlat).toFixed(4);
+    var inittxlat = parseFloat(txlat).toFixed(4);
     var inittxlng = parseFloat(txlng).toFixed(4);
     document.getElementById("txlat").value = inittxlat;
     document.getElementById("txlng").value = inittxlng;
